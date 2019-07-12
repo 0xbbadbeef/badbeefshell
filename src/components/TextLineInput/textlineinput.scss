@@ -1,0 +1,19 @@
+$cursor-color: #00FF00;
+
+.bb__textlineinput {
+    @extend %default-font-style;
+
+    display: block;
+
+    &__input {
+        margin-left: 5px;
+
+        &--active {
+            border-right: 8px solid $cursor-color;
+        }
+    }
+}
+
+#text {
+    background-color: black;
+}
