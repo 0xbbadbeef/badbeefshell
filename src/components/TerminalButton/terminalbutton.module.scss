@@ -1,0 +1,13 @@
+$terminalbutton-hovercolor: #ff5;
+
+.bb__terminalbutton {
+  @extend %default-font-style;
+  margin-left: 10px;
+  display: inline-block;
+  text-decoration: underline;
+
+  &:hover {
+    color: $terminalbutton-hovercolor;
+    cursor: pointer;
+  }
+}

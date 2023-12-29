@@ -1,39 +1,33 @@
 {
-  "name": "badbeefhome",
+  "name": "bbadbeefshell",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/jest": "24.0.15",
-    "@types/node": "12.6.2",
-    "@types/react": "16.9.23",
-    "@types/react-dom": "16.9.5",
-    "node-sass": "4.12.0",
-    "node-sass-glob-importer": "5.3.2",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
-    "react-scripts": "3.4.0",
-    "typescript": "3.8.3"
-  },
   "scripts": {
-    "start:react": "react-scripts start",
-    "build:react": "react-scripts build",
-    "sass": "node-sass --importer node_modules/node-sass-glob-importer/dist/cli.js src/App.scss src/App.css",
-    "start": "npm-run-all sass start:react",
-    "build": "npm-run-all sass build:react"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prettier": "prettier . --write",
+    "prepare": "husky install"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.69.5"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "peerDependencies": {
+    "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "husky": "^8.0.3",
+    "prettier": "^3.1.1",
+    "typescript": "^5"
   }
 }

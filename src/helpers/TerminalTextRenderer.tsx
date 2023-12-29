@@ -1,40 +1,77 @@
-import React, { useRef } from 'react';
-import { TextLine } from 'components';
+import React, { useEffect, useRef, useState } from "react";
+import { TextLine } from "~/components";
 
-interface ITerminalTextRenderer {
-    text: Array<string | JSX.Element>;
-    onTextRender: () => void;
+const CHARACTER_TIME = 15; // ms
+
+interface TerminalTextRendererProps {
+  lines: Array<string | JSX.Element>;
+  onTextRender: () => void;
 }
 
-const TerminalTextRenderer: React.SFC<ITerminalTextRenderer> = (props: ITerminalTextRenderer) => {
-    const { text, onTextRender } = props;
-    const prevProps = useRef<ITerminalTextRenderer['text']>([]);
+const TerminalTextRenderer = (props: TerminalTextRendererProps) => {
+  const { lines, onTextRender } = props;
 
-    const output = text.reduce((acc, line, index) => {
-        const duration = typeof line === 'string'
-                            ? line.length * 15
-                            : 0;
+  const [renderedLines, setRenderedLines] = useState<JSX.Element[]>([]);
+  const previousLines = useRef(lines);
 
-        acc.items.push(
-            <TextLine 
-                text={line as string}
-                delay={acc.currentDelay}
-                key={index}
-                style={{ animationDuration: `${duration}ms` }}
-                onTextRender={onTextRender}
-            />
-        );
+  useEffect(
+    function clearLines() {
+      if (lines.length < previousLines.current.length) {
+        setRenderedLines([]);
+      }
 
-        if (index > prevProps.current.length) {
-            acc.currentDelay += duration;
-        }
+      previousLines.current = lines;
+    },
+    [lines],
+  );
 
-        return acc;
-    }, { items: [] as Array<string | JSX.Element>, currentDelay: 0 });
+  useEffect(
+    function appendLine() {
+      if (renderedLines.length >= lines.length) return;
 
-    prevProps.current = output.items;
+      const currentLineIndex = renderedLines.length;
+      const currentLine = lines[currentLineIndex];
 
-    return <>{output.items}</>;
-}
+      const previousLineIndex = currentLineIndex - 1 ?? 0;
+      const previousLine = lines[previousLineIndex];
+
+      const delay =
+        typeof previousLine === "string"
+          ? previousLine.length * CHARACTER_TIME
+          : 0;
+
+      const timeout = setTimeout(
+        () =>
+          setRenderedLines((currentLines) => [
+            ...currentLines,
+            <TextLine
+              text={currentLine}
+              key={currentLineIndex}
+              style={{
+                animationDuration: `${
+                  typeof currentLine === "string"
+                    ? currentLine.length * CHARACTER_TIME
+                    : 0
+                }ms`,
+              }}
+            />,
+          ]),
+        delay,
+      );
+
+      return () => clearTimeout(timeout);
+    },
+    [lines, onTextRender, renderedLines, renderedLines.length],
+  );
+
+  useEffect(
+    function onTextRendered() {
+      onTextRender();
+    },
+    [onTextRender, renderedLines],
+  );
+
+  return renderedLines;
+};
 
 export default TerminalTextRenderer;

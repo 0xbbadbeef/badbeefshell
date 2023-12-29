@@ -1,76 +1,85 @@
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
-import { USER_STRING, KEYS } from 'consts';
+import { USER_STRING, KEYS } from "~/consts";
 
-interface ITextLineInput {
-    onSubmit: (value: string, event: KeyboardEvent) => void;
+import textlineInputStyles from "./textlineinput.module.scss";
+import clsx from "clsx";
+
+interface TextLineInputProps {
+  onSubmit: (value: string, event: KeyboardEvent) => void;
 }
 
-export interface ITextLineInputRef {
-    setDisabled: () => void;
+export interface TextLineInputRef {
+  setDisabled: () => void;
 }
 
-const TextLineInput = React.forwardRef((props: ITextLineInput, ref: React.Ref<ITextLineInputRef>) => {
-    const [ value, setValue ] = useState('');
-    const [ editable, setEditable ] = useState(true);
-    const isListening = useRef(false);
+export default forwardRef(function TextLineInput(
+  props: TextLineInputProps,
+  ref: React.Ref<TextLineInputRef>,
+) {
+  const [value, setValue] = useState("");
+  const [editable, setEditable] = useState(true);
 
-    useImperativeHandle(ref, () => ({
-        setDisabled: () => {
-            setEditable(false);
-            toggleInputListener(false);
-        }
-    }));
+  useImperativeHandle(ref, () => ({
+    setDisabled: () => {
+      setEditable(false);
+    },
+  }));
 
-    const onKeyDown = (event: KeyboardEvent) => {
-        const { keyCode, key } = event;
-        toggleInputListener(false);
-        event.stopPropagation();
-        event.preventDefault();
+  const onKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { keyCode, key } = event;
+      // event.stopPropagation();
+      // event.preventDefault();
 
-        switch (true) {
-            case keyCode === KEYS.ENTER_KEY:
-                props.onSubmit(value, event);
-                break;
-            case keyCode === KEYS.BACKSPACE_KEY:
-                setValue(value.slice(0, Math.max(0, value.length) - 1));
-                toggleInputListener(true);
-                break;
-            case (keyCode >= KEYS.A_KEY && keyCode <= KEYS.Z_KEY)
-                || (keyCode >= KEYS.ZERO_KEY && keyCode <= KEYS.NINE_KEY)
-                || (keyCode === KEYS.SPACE_KEY):
-                setValue(value + key);
-                break;
-            default:
-                toggleInputListener(true);
-        }
-    }
+      switch (true) {
+        case keyCode === KEYS.ENTER_KEY:
+          props.onSubmit(value, event);
+          break;
+        case keyCode === KEYS.BACKSPACE_KEY:
+          setValue((currentValue) =>
+            currentValue.slice(0, Math.max(0, currentValue.length - 1)),
+          );
+          break;
+        case (keyCode >= KEYS.A_KEY && keyCode <= KEYS.Z_KEY) ||
+          (keyCode >= KEYS.ZERO_KEY && keyCode <= KEYS.NINE_KEY) ||
+          keyCode === KEYS.SPACE_KEY:
+          setValue((currentValue) => currentValue + key);
+          break;
+      }
+    },
+    [props, value],
+  );
 
-    const toggleInputListener = (shouldListen: boolean) => {
-        if (shouldListen === isListening.current) { return; }
+  useEffect(
+    function attachKeyboardListener() {
+      if (editable) window.addEventListener("keydown", onKeyDown);
 
-        isListening.current = shouldListen;
+      return () => window.removeEventListener("keydown", onKeyDown);
+    },
+    [editable, onKeyDown],
+  );
 
-        shouldListen 
-            ? window.addEventListener('keydown', onKeyDown)
-            : window.removeEventListener('keydown', onKeyDown);
-    }
-
-    if (editable) {
-        toggleInputListener(true);
-    }
-
-    const baseClass = 'bb__textlineinput__input';
-    return (
-        <div className='bb__textlineinput'>
-            <span>
-                {USER_STRING()}
-                <span className={`${baseClass}${editable ? ` ${baseClass}--active` : ''}`}>
-                    {value} {/* we dont use contentEditable to prevent standard input controls and cursor positioning */}
-                </span>
-            </span>
-        </div>
-    );
+  return (
+    <div className={textlineInputStyles.bb__textlineinput}>
+      <span>
+        {USER_STRING()}
+        <span
+          className={clsx(
+            textlineInputStyles.bb__textlineinput__input,
+            editable && textlineInputStyles["bb__textlineinput__input--active"],
+          )}
+        >
+          {value}{" "}
+        </span>
+      </span>
+    </div>
+  );
 });
-
-export default TextLineInput;

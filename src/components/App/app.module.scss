@@ -1,0 +1,62 @@
+.bb__app {
+  display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+
+  background-color: $main-background-color;
+  font-family: IBMVGA8, Arial, Helvetica, sans-serif;
+
+  -webkit-box-shadow: inset -1px 2px 66px 32px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset -1px 2px 66px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: inset -1px 2px 66px 32px rgba(0, 0, 0, 0.5);
+
+  position: relative;
+
+  & > * {
+    -webkit-filter: blur($main-blur-intensity);
+    -moz-filter: blur($main-blur-intensity);
+    -o-filter: blur($main-blur-intensity);
+    -ms-filter: blur($main-blur-intensity);
+    filter: blur($main-blur-intensity);
+  }
+
+  &:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+
+    background-color: black;
+    animation: flicker 120ms linear infinite alternate;
+
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.07;
+  }
+}
