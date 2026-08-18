@@ -26,6 +26,11 @@ export const CLICKABLE_LINKS: ClickableLinkProps[] = [
     children: "Countries - CRA app",
     newTab: true,
   },
+  {
+    href: "https://github.com/0xbbadbeef/iolite",
+    children: "iolite (Rust) - A game server offline explorer",
+    newTab: true,
+  }
 ];
 
 export const getLines = () => [
