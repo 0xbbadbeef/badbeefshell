@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 export default function AppPage() {
   return (
-    <div className={clsx(appClasses.bb__app, appClasses.flicker, "awd")}>
+    <div className={clsx(appClasses.bb__app, appClasses.flicker)}>
       <Terminal />
     </div>
   );

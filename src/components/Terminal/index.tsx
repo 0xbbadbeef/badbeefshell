@@ -9,6 +9,9 @@ import commands from "./commands";
 
 import terminalClasses from "./terminal.module.scss";
 
+const DAMPER = 100;
+const CLAMP = 5;
+
 export interface TerminalStateProps {
   lines: Array<JSX.Element | string>;
 }
@@ -61,15 +64,13 @@ const Terminal = () => {
     if (!currentTerminalRef) {
       return;
     }
-    const damper = 50;
     const out = {
-      x: (pageX - window.outerWidth / 2) / damper,
-      y: (pageY - window.outerHeight / 2) / damper,
+      x: Math.min(Math.max((pageX - window.outerWidth / 2) / DAMPER, CLAMP * -1), CLAMP),
+      y: Math.min(Math.max((pageY - window.outerHeight / 2) / DAMPER, CLAMP * -1), CLAMP),
     };
 
-    currentTerminalRef.style.transform = `perspective(2000px) rotateX(${-out.y}deg) rotateY(${
-      out.x
-    }deg)`;
+    currentTerminalRef.style.transform = `perspective(2000px) rotateX(${-out.y}deg) rotateY(${out.x
+      }deg)`;
   }, []);
 
   useEffect(
