@@ -2,8 +2,7 @@ import React from "react";
 import terminalButtonStyles from "./terminalbutton.module.scss";
 import clsx from "clsx";
 
-interface TerminalButtonProps
-  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface TerminalButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   newTab?: boolean;
 }
 
@@ -15,10 +14,7 @@ const TerminalButton = (props: TerminalButtonProps) => {
       <a
         target={newTab ? "_blank" : ""}
         {...rest}
-        className={clsx(
-          terminalButtonStyles.bb__terminalbutton,
-          rest.className || "",
-        )}
+        className={clsx(terminalButtonStyles.bb__terminalbutton, rest.className || "")}
       >
         {props.children}
       </a>

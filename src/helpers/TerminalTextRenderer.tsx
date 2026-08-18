@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import { TextLine } from "~/components";
 
 const CHARACTER_TIME = 15; // ms
@@ -32,13 +32,10 @@ const TerminalTextRenderer = (props: TerminalTextRendererProps) => {
       const currentLineIndex = renderedLines.length;
       const currentLine = lines[currentLineIndex];
 
-      const previousLineIndex = currentLineIndex - 1 ?? 0;
+      const previousLineIndex = (currentLineIndex - 1) || 0;
       const previousLine = lines[previousLineIndex];
 
-      const delay =
-        typeof previousLine === "string"
-          ? previousLine.length * CHARACTER_TIME
-          : 0;
+      const delay = typeof previousLine === "string" ? previousLine.length * CHARACTER_TIME : 0;
 
       const timeout = setTimeout(
         () =>
@@ -48,11 +45,8 @@ const TerminalTextRenderer = (props: TerminalTextRendererProps) => {
               text={currentLine}
               key={currentLineIndex}
               style={{
-                animationDuration: `${
-                  typeof currentLine === "string"
-                    ? currentLine.length * CHARACTER_TIME
-                    : 0
-                }ms`,
+                animationDuration: `${typeof currentLine === "string" ? currentLine.length * CHARACTER_TIME : 0
+                  }ms`,
               }}
             />,
           ]),

@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 
 import { USER_STRING, KEYS } from "~/consts";
 
@@ -44,9 +37,7 @@ export default forwardRef(function TextLineInput(
           props.onSubmit(value, event);
           break;
         case keyCode === KEYS.BACKSPACE_KEY:
-          setValue((currentValue) =>
-            currentValue.slice(0, Math.max(0, currentValue.length - 1)),
-          );
+          setValue((currentValue) => currentValue.slice(0, Math.max(0, currentValue.length - 1)));
           break;
         case (keyCode >= KEYS.A_KEY && keyCode <= KEYS.Z_KEY) ||
           (keyCode >= KEYS.ZERO_KEY && keyCode <= KEYS.NINE_KEY) ||

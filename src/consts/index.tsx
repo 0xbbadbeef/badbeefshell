@@ -1,3 +1,5 @@
+
+/* oxlint-disable only-export-components */
 export const USER_STRING = (path?: string) => `root@bbadbeef:~${path || ""}#`;
 
 export const KEYS = {

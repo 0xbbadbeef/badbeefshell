@@ -1,13 +1,10 @@
-import { TerminalStateProps } from ".";
-import { getLines, CLICKABLE_LINKS } from "./lines";
+import { type TerminalStateProps } from ".";
+import { CLICKABLE_LINKS } from "./lines";
 
 const commands: {
   [commandName: string]:
     | string
-    | ((
-        lines: TerminalStateProps["lines"],
-        args: string[],
-      ) => TerminalStateProps["lines"]);
+    | ((lines: TerminalStateProps["lines"], args: string[]) => TerminalStateProps["lines"]);
 } = {
   help: (lines) => [
     ...lines,
@@ -33,9 +30,7 @@ const commands: {
     if (!link) {
       return [
         ...lines,
-        `open: ${
-          arg || ""
-        }: Link not found! Please choose one of the above links (before the "-")`,
+        `open: ${arg || ""}: Link not found! Please choose one of the above links (before the "-")`,
       ];
     }
 

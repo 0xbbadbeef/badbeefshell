@@ -1,32 +1,33 @@
 {
-  "name": "bbadbeefshell",
-  "version": "0.1.0",
+  "name": "my-react-app",
+  "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "prettier": "prettier . --write",
-    "prepare": "husky install"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "pnpm run build && vite preview",
+    "deploy": "pnpm run build && wrangler deploy",
+    "format": "oxfmt",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.1.1",
-    "@vercel/speed-insights": "^1.0.2",
-    "clsx": "^2.0.0",
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "sass": "^1.69.5"
+    "clsx": "^2.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sass": "^1.102.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4",
-    "husky": "^8.0.3",
-    "prettier": "^3.1.1",
-    "typescript": "^5"
+    "@cloudflare/vite-plugin": "^1.52.1",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.75.0",
+    "typescript": "7.0.2",
+    "vite": "^8.2.0",
+    "wrangler": "^4.123.0"
   }
 }

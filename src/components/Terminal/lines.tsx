@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-key */
-import React from "react";
-
 import { TerminalButton } from "~/components";
 import { USER_STRING } from "~/consts";
 

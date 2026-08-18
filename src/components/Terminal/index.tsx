@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type JSX } from "react";
 
 import { TextLineInput } from "~/components";
-import { TextLineInputRef } from "~/components/TextLineInput";
+import { type TextLineInputRef } from "~/components/TextLineInput";
 import TerminalTextRenderer from "~/helpers/TerminalTextRenderer";
 
 import { getLines } from "./lines";
@@ -18,17 +18,13 @@ const Terminal = () => {
   const lastInputRef = useRef<TextLineInputRef>(null);
 
   const processCommand = useCallback(
-    (
-      input: string,
-      lines: TerminalStateProps["lines"],
-    ): TerminalStateProps["lines"] => {
+    (input: string, lines: TerminalStateProps["lines"]): TerminalStateProps["lines"] => {
       const [command, ...args] = input.split(" ");
       const foundCommand = commands[command];
 
       if (!input) return [...lines, ""];
 
-      if (!foundCommand)
-        return [...lines, `-bash: ${input}: command not found`];
+      if (!foundCommand) return [...lines, `-bash: ${input}: command not found`];
 
       return typeof foundCommand === "string"
         ? [...lines, foundCommand]
@@ -43,11 +39,7 @@ const Terminal = () => {
 
       setLines((currentLines) => [
         ...processCommand(value, currentLines),
-        <TextLineInput
-          onSubmit={onTextSubmit}
-          ref={lastInputRef}
-          key={new Date().toISOString()}
-        />,
+        <TextLineInput onSubmit={onTextSubmit} ref={lastInputRef} key={new Date().toISOString()} />,
       ]);
     },
     [processCommand],
@@ -55,11 +47,7 @@ const Terminal = () => {
 
   const [lines, setLines] = useState([
     ...getLines(),
-    <TextLineInput
-      onSubmit={onTextSubmit}
-      ref={lastInputRef}
-      key={new Date().toISOString()}
-    />,
+    <TextLineInput onSubmit={onTextSubmit} ref={lastInputRef} key={new Date().toISOString()} />,
   ]);
 
   const onTextLineRender = () => {
